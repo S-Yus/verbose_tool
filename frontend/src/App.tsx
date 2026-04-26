@@ -1,16 +1,16 @@
 import { useState } from 'react'
 
 const LEVEL_LABELS: Record<number, string> = {
-  1: '少し丁寧',
+  1: 'やや丁寧',
   2: '回りくどい',
   3: '補足多め',
   4: 'かなり冗長',
-  5: '官僚的',
-  6: '学術論文風',
-  7: '哲学的',
+  5: '政治家',
+  6: '学術論文',
+  7: '哲学',
   8: '存在論的',
-  9: '超冗長',
-  10: '宇宙的',
+  9: '資源の無駄',
+  10: '宇宙',
 }
 
 export default function App() {
@@ -48,7 +48,7 @@ export default function App() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>冗長ツール</h1>
+      <h1 style={styles.title}>冗長くん</h1>
       <p style={styles.subtitle}>短い文章を無駄に長くします</p>
 
       <textarea

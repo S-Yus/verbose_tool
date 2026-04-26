@@ -9,10 +9,11 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
+        "https://verbose-tool.vercel.app",
         "https://冗長.com",
         "https://www.冗長.com",
-        "https://xn--wgv71a309e.com",
-        "https://www.xn--wgv71a309e.com",
+        "https://xn--e7qs86n.com",
+        "https://www.xn--e7qs86n.com",
     ],
     allow_methods=["*"],
     allow_headers=["*"],

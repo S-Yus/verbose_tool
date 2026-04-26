@@ -132,13 +132,16 @@ body {
 
 @media (max-width: 480px) {
   body {
-    align-items: flex-start;
-    padding: 12px;
+    align-items: stretch;
+    padding: 0;
+    background: #fff;
   }
 
   .container {
     padding: 24px 16px;
-    border-radius: 12px;
+    border-radius: 0;
+    box-shadow: none;
+    min-height: 100vh;
     gap: 16px;
   }
 

@@ -47,35 +47,35 @@ export default function App() {
   }
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>冗長くん</h1>
-      <p style={styles.subtitle}>短い文章を無駄に長くします</p>
+    <div className="container">
+      <h1 className="title">冗長くん</h1>
+      <p className="subtitle">短い文章を無駄に長くします</p>
 
       <textarea
-        style={styles.textarea}
+        className="textarea"
         placeholder="冗長にしたい文章を入力..."
         value={input}
         onChange={e => setInput(e.target.value)}
         rows={4}
       />
 
-      <div style={styles.sliderRow}>
-        <span style={styles.sliderLabel}>冗長レベル</span>
+      <div className="slider-row">
+        <span className="slider-label">冗長レベル</span>
         <input
           type="range"
           min={1}
           max={10}
           value={level}
           onChange={e => setLevel(Number(e.target.value))}
-          style={styles.slider}
+          className="slider"
         />
-        <span style={styles.levelBadge}>
+        <span className="level-badge">
           {level} / 10 — {LEVEL_LABELS[level]}
         </span>
       </div>
 
       <button
-        style={{ ...styles.button, opacity: loading ? 0.6 : 1 }}
+        className="button"
         onClick={handleSubmit}
         disabled={loading}
       >
@@ -83,114 +83,16 @@ export default function App() {
       </button>
 
       {result && (
-        <div style={styles.resultBox}>
-          <div style={styles.resultHeader}>
-            <span style={styles.resultLabel}>結果</span>
-            <button style={styles.copyButton} onClick={handleCopy}>
+        <div className="result-box">
+          <div className="result-header">
+            <span className="result-label">結果</span>
+            <button className="copy-button" onClick={handleCopy}>
               {copied ? 'コピーしました！' : 'コピー'}
             </button>
           </div>
-          <p style={styles.resultText}>{result}</p>
+          <p className="result-text">{result}</p>
         </div>
       )}
     </div>
   )
-}
-
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    background: '#fff',
-    borderRadius: 16,
-    padding: '40px',
-    width: '100%',
-    maxWidth: 680,
-    boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 20,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 700,
-    color: '#1a1a1a',
-  },
-  subtitle: {
-    color: '#888',
-    fontSize: 14,
-    marginTop: -12,
-  },
-  textarea: {
-    width: '100%',
-    padding: '12px 16px',
-    borderRadius: 10,
-    border: '1.5px solid #e0e0e0',
-    fontSize: 15,
-    resize: 'vertical',
-    outline: 'none',
-    fontFamily: 'inherit',
-  },
-  sliderRow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-  },
-  sliderLabel: {
-    fontSize: 14,
-    fontWeight: 600,
-    whiteSpace: 'nowrap',
-    color: '#444',
-  },
-  slider: {
-    flex: 1,
-    accentColor: '#6366f1',
-  },
-  levelBadge: {
-    fontSize: 13,
-    color: '#6366f1',
-    fontWeight: 600,
-    whiteSpace: 'nowrap',
-  },
-  button: {
-    padding: '12px 0',
-    background: '#6366f1',
-    color: '#fff',
-    border: 'none',
-    borderRadius: 10,
-    fontSize: 16,
-    fontWeight: 600,
-    cursor: 'pointer',
-    transition: 'opacity 0.2s',
-  },
-  resultBox: {
-    background: '#f8f8ff',
-    border: '1.5px solid #e0e0f0',
-    borderRadius: 10,
-    padding: '16px',
-  },
-  resultHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  resultLabel: {
-    fontWeight: 600,
-    fontSize: 13,
-    color: '#6366f1',
-  },
-  copyButton: {
-    fontSize: 12,
-    padding: '4px 10px',
-    borderRadius: 6,
-    border: '1px solid #6366f1',
-    background: 'transparent',
-    color: '#6366f1',
-    cursor: 'pointer',
-  },
-  resultText: {
-    fontSize: 15,
-    lineHeight: 1.7,
-    color: '#333',
-    whiteSpace: 'pre-wrap',
-  },
 }

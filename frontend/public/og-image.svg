@@ -1,0 +1,83 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="headGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="fadeOut" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e3a8a" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#1e3a8a" stop-opacity="1"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="boxClip">
+      <rect x="60" y="270" width="700" height="360"/>
+    </clipPath>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- 装飾 -->
+  <circle cx="1100" cy="500" r="200" fill="#3b82f6" opacity="0.07"/>
+  <circle cx="80" cy="600" r="150" fill="#60a5fa" opacity="0.05"/>
+
+  <!-- タイトル -->
+  <text x="60" y="115" font-family="sans-serif" font-size="72" font-weight="bold" fill="white">冗長くん</text>
+  <text x="64" y="155" font-family="sans-serif" font-size="28" fill="#93c5fd">短い文章を無駄に長くします</text>
+
+  <!-- 入力例 -->
+  <text x="64" y="200" font-family="sans-serif" font-size="22" fill="#60a5fa">「今日は晴れた」  →  レベル10</text>
+
+  <!-- 吹き出しボックス（境目なし・塗りのみ） -->
+  <rect x="60" y="218" width="700" height="360" rx="16" fill="white" opacity="0.13"/>
+
+  <!-- テキスト行1-3（ボックス内） -->
+  <text x="80" y="252" font-family="sans-serif" font-size="18" fill="white">本日という、時間の流れの中において我々が現在という名称で呼び</text>
+  <text x="80" y="282" font-family="sans-serif" font-size="18" fill="white">慣わしている一つの瞬間、あるいはそれより広く解釈すれば24時間</text>
+  <text x="80" y="312" font-family="sans-serif" font-size="18" fill="white">という周期的な時間単位の総体としての「今日」という概念的存在が、</text>
+
+  <!-- テキスト行4以降（だんだん薄くなる） -->
+  <text x="80" y="342" font-family="sans-serif" font-size="18" fill="white" opacity="0.85">実在するのか、あるいはそれが単なる人間の時間認識の産物に過ぎな</text>
+  <text x="80" y="372" font-family="sans-serif" font-size="18" fill="white" opacity="0.65">いのかという根本的な存在論的問いを一時保留とした上で、その「今日」</text>
+  <text x="80" y="402" font-family="sans-serif" font-size="18" fill="white" opacity="0.45">において観測される気象現象、すなわち太陽放射が大気圏を透過して</text>
+  <text x="80" y="432" font-family="sans-serif" font-size="18" fill="white" opacity="0.25">地表に到達し、雲という水蒸気の凝結物がその光の通路を遮断すること</text>
+  <text x="80" y="462" font-family="sans-serif" font-size="18" fill="white" opacity="0.12">なく、むしろ最小限に留めている状態、つまり晴天という気象状態が…</text>
+  <text x="80" y="492" font-family="sans-serif" font-size="18" fill="white" opacity="0.04">優位に継続しているという事実が、我々の知覚や観測機器によって…</text>
+
+  <!-- フェードアウト用オーバーレイ -->
+  <rect x="60" y="370" width="700" height="208" rx="0 0 16 16" fill="url(#fadeOut)"/>
+
+  <!-- ロボット（右上） -->
+  <g transform="translate(820, 60) scale(1.9)">
+    <line x1="80" y1="8" x2="80" y2="28" stroke="#93c5fd" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="80" cy="6" r="7" fill="#00d4ff" filter="url(#glow)"/>
+    <rect x="28" y="28" width="104" height="82" rx="18" fill="url(#headGrad)"/>
+    <rect x="14" y="48" width="14" height="24" rx="5" fill="#2563eb"/>
+    <rect x="132" y="48" width="14" height="24" rx="5" fill="#2563eb"/>
+    <circle cx="55" cy="62" r="14" fill="#1e3a8a"/>
+    <circle cx="105" cy="62" r="14" fill="#1e3a8a"/>
+    <circle cx="55" cy="62" r="8" fill="#00d4ff" filter="url(#glow)"/>
+    <circle cx="105" cy="62" r="8" fill="#00d4ff" filter="url(#glow)"/>
+    <circle cx="58" cy="58" r="2.5" fill="white" opacity="0.6"/>
+    <circle cx="108" cy="58" r="2.5" fill="white" opacity="0.6"/>
+    <ellipse cx="80" cy="94" rx="16" ry="9" fill="#1e3a8a"/>
+    <rect x="18" y="118" width="124" height="76" rx="14" fill="url(#bodyGrad)"/>
+    <rect x="32" y="132" width="36" height="22" rx="7" fill="#1e3a8a" opacity="0.5"/>
+    <rect x="92" y="132" width="36" height="22" rx="7" fill="#1e3a8a" opacity="0.5"/>
+    <circle cx="80" cy="168" r="10" fill="#00d4ff" filter="url(#glow)"/>
+  </g>
+
+  <!-- ドメイン -->
+  <text x="64" y="608" font-family="sans-serif" font-size="24" fill="#60a5fa" opacity="0.7">冗長.com</text>
+</svg>

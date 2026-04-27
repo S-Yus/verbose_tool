@@ -5,7 +5,7 @@ const LEVEL_LABELS: Record<number, string> = {
   2: '回りくどい',
   3: '補足多め',
   4: 'かなり冗長',
-  5: '政治家',
+  5: '冗長くん',
   6: '学術論文',
   7: '哲学',
   8: '存在論的',
@@ -48,7 +48,7 @@ export default function App() {
 
   return (
     <div className="container">
-      <h1 className="title">政治家</h1>
+      <h1 className="title">冗長くん</h1>
       <p className="subtitle">短い文章を無駄に長くします</p>
 
       <textarea

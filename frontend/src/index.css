@@ -74,6 +74,8 @@ body {
   color: #6366f1;
   font-weight: 600;
   white-space: nowrap;
+  min-width: 120px;
+  text-align: right;
 }
 
 .button {

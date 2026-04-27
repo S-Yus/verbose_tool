@@ -1,7 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import anthropic
+import time
+from collections import defaultdict
 
 app = FastAPI()
 
@@ -20,6 +22,13 @@ app.add_middleware(
 )
 
 client = anthropic.Anthropic()
+
+# IPごとのレート制限: 1分間に5回まで
+RATE_LIMIT = 5
+RATE_WINDOW = 60
+ip_requests: dict[str, list[float]] = defaultdict(list)
+
+MAX_INPUT_LENGTH = 500
 
 
 class VerboseRequest(BaseModel):
@@ -42,7 +51,20 @@ LEVEL_DESCRIPTIONS = {
 
 
 @app.post("/api/verbose")
-async def make_verbose(req: VerboseRequest):
+async def make_verbose(req: VerboseRequest, request: Request):
+    # 入力文字数チェック
+    if len(req.text) > MAX_INPUT_LENGTH:
+        raise HTTPException(status_code=400, detail=f"入力は{MAX_INPUT_LENGTH}文字以内にしてください。")
+
+    # IPレート制限
+    ip = request.client.host
+    now = time.time()
+    timestamps = ip_requests[ip]
+    ip_requests[ip] = [t for t in timestamps if now - t < RATE_WINDOW]
+    if len(ip_requests[ip]) >= RATE_LIMIT:
+        raise HTTPException(status_code=429, detail="リクエストが多すぎます。1分後に試してください。")
+    ip_requests[ip].append(now)
+
     description = LEVEL_DESCRIPTIONS.get(req.level, LEVEL_DESCRIPTIONS[5])
 
     message = client.messages.create(

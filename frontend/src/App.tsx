@@ -32,9 +32,13 @@ export default function App() {
         body: JSON.stringify({ text: input, level }),
       })
       const data = await res.json()
-      setResult(data.result)
+      if (!res.ok) {
+        setResult(data.detail ?? 'エラーが発生しました。')
+      } else {
+        setResult(data.result)
+      }
     } catch {
-      setResult('エラーが発生しました。バックエンドが起動しているか確認してください。')
+      setResult('エラーが発生しました。')
     } finally {
       setLoading(false)
     }
@@ -51,13 +55,19 @@ export default function App() {
       <h1 className="title">冗長くん</h1>
       <p className="subtitle">短い文章を無駄に長くします</p>
 
-      <textarea
-        className="textarea"
-        placeholder="冗長にしたい文章を入力..."
-        value={input}
-        onChange={e => setInput(e.target.value)}
-        rows={4}
-      />
+      <div style={{ position: 'relative' }}>
+        <textarea
+          className="textarea"
+          placeholder="冗長にしたい文章を入力..."
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          rows={4}
+          maxLength={500}
+        />
+        <span style={{ position: 'absolute', bottom: 8, right: 12, fontSize: 12, color: input.length >= 500 ? '#e55' : '#aaa' }}>
+          {input.length} / 500
+        </span>
+      </div>
 
       <div className="slider-row">
         <span className="slider-label">冗長レベル</span>

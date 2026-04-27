@@ -8,9 +8,9 @@ const LEVEL_LABELS: Record<number, string> = {
   5: '冗長くん',
   6: '学術論文',
   7: '哲学',
-  8: '存在論的',
+  8: '宇宙',
   9: '資源の無駄',
-  10: '宇宙',
+  10: '存在論的',
 }
 
 export default function App() {

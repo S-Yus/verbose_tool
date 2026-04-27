@@ -1,9 +1,12 @@
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import anthropic
+import json
 import time
 from collections import defaultdict
+
+import anthropic
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -23,7 +26,6 @@ app.add_middleware(
 
 client = anthropic.Anthropic()
 
-# IPごとのレート制限: 1分間に5回まで
 RATE_LIMIT = 5
 RATE_WINDOW = 60
 ip_requests: dict[str, list[float]] = defaultdict(list)
@@ -33,7 +35,7 @@ MAX_INPUT_LENGTH = 500
 
 class VerboseRequest(BaseModel):
     text: str
-    level: int  # 1-10
+    level: int
 
 
 LEVEL_DESCRIPTIONS = {
@@ -52,37 +54,42 @@ LEVEL_DESCRIPTIONS = {
 
 @app.post("/api/verbose")
 async def make_verbose(req: VerboseRequest, request: Request):
-    # 入力文字数チェック
     if len(req.text) > MAX_INPUT_LENGTH:
         raise HTTPException(status_code=400, detail=f"入力は{MAX_INPUT_LENGTH}文字以内にしてください。")
 
-    # IPレート制限（リバースプロキシ対応）
     forwarded_for = request.headers.get("X-Forwarded-For")
     ip = forwarded_for.split(",")[0].strip() if forwarded_for else request.client.host
     now = time.time()
-    timestamps = ip_requests[ip]
-    ip_requests[ip] = [t for t in timestamps if now - t < RATE_WINDOW]
+    ip_requests[ip] = [t for t in ip_requests[ip] if now - t < RATE_WINDOW]
     if len(ip_requests[ip]) >= RATE_LIMIT:
         raise HTTPException(status_code=429, detail="冗長くんは1分間に5回までしか動きません")
     ip_requests[ip].append(now)
 
     description = LEVEL_DESCRIPTIONS.get(req.level, LEVEL_DESCRIPTIONS[5])
 
-    message = client.messages.create(
-        model="claude-haiku-4-5-20251001",
-        max_tokens=2048,
-        system=(
-            "あなたは文章を無駄に冗長にする専門家です。"
-            "入力された文章を指定されたレベルで冗長に書き直してください。"
-            "意味は変えず、ただ無駄に長くしてください。"
-            "書き直した文章のみを返してください。説明や前置きは不要です。"
-        ),
-        messages=[
-            {
-                "role": "user",
-                "content": f"冗長レベル{req.level}/10（{description}）で書き直してください:\n\n{req.text}",
-            }
-        ],
-    )
+    def generate():
+        with client.messages.stream(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=2048,
+            system=(
+                "あなたは文章を無駄に冗長にする専門家です。"
+                "入力された文章を指定されたレベルで冗長に書き直してください。"
+                "意味は変えず、ただ無駄に長くしてください。"
+                "書き直した文章のみを返してください。説明や前置きは不要です。"
+            ),
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"冗長レベル{req.level}/10（{description}）で書き直してください:\n\n{req.text}",
+                }
+            ],
+        ) as stream:
+            for text in stream.text_stream:
+                yield f"data: {json.dumps({'text': text})}\n\n"
+        yield "data: [DONE]\n\n"
 
-    return {"result": message.content[0].text}
+    return StreamingResponse(
+        generate(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )

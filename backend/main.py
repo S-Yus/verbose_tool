@@ -63,7 +63,7 @@ async def make_verbose(req: VerboseRequest, request: Request):
     timestamps = ip_requests[ip]
     ip_requests[ip] = [t for t in timestamps if now - t < RATE_WINDOW]
     if len(ip_requests[ip]) >= RATE_LIMIT:
-        raise HTTPException(status_code=429, detail="１分間に５回までです")
+        raise HTTPException(status_code=429, detail="冗長くんは1分間に5回までしか動きません")
     ip_requests[ip].append(now)
 
     description = LEVEL_DESCRIPTIONS.get(req.level, LEVEL_DESCRIPTIONS[5])

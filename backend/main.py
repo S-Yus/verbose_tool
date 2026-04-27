@@ -56,8 +56,9 @@ async def make_verbose(req: VerboseRequest, request: Request):
     if len(req.text) > MAX_INPUT_LENGTH:
         raise HTTPException(status_code=400, detail=f"入力は{MAX_INPUT_LENGTH}文字以内にしてください。")
 
-    # IPレート制限
-    ip = request.client.host
+    # IPレート制限（リバースプロキシ対応）
+    forwarded_for = request.headers.get("X-Forwarded-For")
+    ip = forwarded_for.split(",")[0].strip() if forwarded_for else request.client.host
     now = time.time()
     timestamps = ip_requests[ip]
     ip_requests[ip] = [t for t in timestamps if now - t < RATE_WINDOW]
